@@ -9,6 +9,9 @@
     "ignoreDeprecations": "5.0", // Ignore deprecation warnings
     "baseUrl": ".",
     "paths": {
+      "~/*": [
+        "src/*"
+      ],
       "@/*": [
         "package/*"
       ]
@@ -16,6 +19,7 @@
   },
   "include": [
     "env.d.ts",
+    "src/**/*",
     "package/**/*"
   ]
 }

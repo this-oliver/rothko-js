@@ -43,6 +43,7 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./package', import.meta.url)),
+        '~': fileURLToPath(new URL('./src', import.meta.url))
       }
     }
   }
