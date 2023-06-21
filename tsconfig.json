@@ -1,0 +1,21 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  "compilerOptions": {
+    "ignoreDeprecations": "5.0", // Ignore deprecation warnings
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "package/*"
+      ]
+    }
+  },
+  "include": [
+    "env.d.ts",
+    "package/**/*"
+  ]
+}

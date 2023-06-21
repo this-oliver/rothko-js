@@ -1,0 +1,8 @@
+# only publish what is necessary, ignore everything else below
+src
+tsconfig.json
+tslint.json
+.env.sample
+.eslintrc
+.eslintignore
+.vscode

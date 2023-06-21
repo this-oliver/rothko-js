@@ -1,0 +1,17 @@
+lib
+dist
+node_modules
+.vscode
+.eslintrc
+.gitignore
+.npmignore
+index.html
+env.d.ts
+package.json
+package-lock.json
+pnpm-lock.yaml
+README.md
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
+LICENSE
