@@ -6,16 +6,9 @@
     }
   ],
   "compilerOptions": {
+    "ignoreDeprecations": "5.0",
     "declaration": true,
     "baseUrl": ".",
-    "paths": {
-      "~/*": [
-        "src/*"
-      ],
-      "@/*": [
-        "package/*"
-      ]
-    }
   },
   "include": [
     "env.d.ts",

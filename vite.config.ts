@@ -39,12 +39,5 @@ export default defineConfig(({ mode }) => {
     ...userConfig,
     
     plugins: commonPlugins,
-    
-    resolve: {
-      alias: {
-        '@': fileURLToPath(new URL('./package', import.meta.url)),
-        '~': fileURLToPath(new URL('./src', import.meta.url))
-      }
-    }
   }
 })

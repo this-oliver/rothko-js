@@ -1,4 +1,5 @@
 # only publish what is necessary, ignore everything else below
+index.html
 src
 tsconfig.json
 tslint.json
@@ -6,3 +7,4 @@ tslint.json
 .eslintrc
 .eslintignore
 .vscode
+.vite
