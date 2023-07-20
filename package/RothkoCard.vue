@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch, type PropType } from 'vue';
-import { useArtist, useColor, usePattern, type Pattern, type ShapeGenerator } from './composables';
+import { useTheme as useVuetifyTheme } from 'vuetify/lib/framework.mjs';
+import { useArtist, usePattern, type Pattern, type ShapeGenerator } from './composables/useArt';
+import { convertStringToHex, getMaterialHex, getRandomHex, isHex } from './utils/color';
 
 const props = defineProps({
   source: {
@@ -40,29 +42,24 @@ const p5Canvas = ref();
 
 const { createQuadShape, createCircleShape, createTriangleShape } = usePattern();
 const { p5Instance, drawShapes } = useArtist(p5Canvas);
-const {
-  getMaterialColor,
-  getRandomHexColor,
-  convertStringToColor,
-  isHexColor
-} = useColor();
 
 const color = computed<string>(() => {
-  let color = getRandomHexColor()
+  let color = getRandomHex()
 
   // if source is provided, convert it to a color
   if (props.source) {
-    color = convertStringToColor(props.source)
+    color = convertStringToHex(props.source)
   }
 
   // if a color is provided and it is a hex color, use it
-  if (props.color && isHexColor(props.color)) {
+  if (props.color && isHex(props.color)) {
     color = props.color
   }
 
   // if a color is provided and it is not a hex color, convert it to a color
   if (props.color) {
-    color = getMaterialColor(props.color)
+    const theme = useVuetifyTheme()
+    color = getMaterialHex(props.color, theme.global.current.value.colors)
   }
 
   return color
@@ -137,3 +134,4 @@ onUnmounted(() => {
   width: 100%;
 }
 </style>
+./utils/color

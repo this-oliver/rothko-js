@@ -2,13 +2,15 @@
   "name": "rothko-js",
   "description": "Generate colors and visual patterns based on text-based input",
   "repository": "this-oliver/rothko-js",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "main": "./lib/rothko-js.umd.js",
   "packageManager": "pnpm@7.29.0",
   "scripts": {
     "dev": "vite",
     "build:lib": "npm run clear && vue-tsc --noEmit && vite build --mode lib",
     "build:demo": "npm run clear && vue-tsc --noEmit && vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "preview": "vite preview",
     "lint": "eslint --ext .ts,.vue --fix .",
     "clear": "rm -rf dist && rm -rf lib",
@@ -26,6 +28,7 @@
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-typescript": "^11.0.2",
     "@vue/tsconfig": "^0.1.3",
+    "chai": "^4.3.7",
     "eslint": "^8.34.0",
     "eslint-plugin-vue": "^9.9.0",
     "fist-bump": "^1.1.0",
@@ -34,6 +37,7 @@
     "typescript": "~4.8.4",
     "vite": "^4.1.4",
     "vite-plugin-dts": "^2.3.0",
+    "vitest": "^0.33.0",
     "vue-tsc": "^1.2.0"
   },
   "simple-git-hooks": {
