@@ -43,25 +43,30 @@ function useArtist(p5Canvas: Ref) {
   const p5Instance = ref<P5>();
 
   /**
-   * shapes to be drawn on the canvas
+   * Shapes to be drawn on the canvas
    */
   const shapes = ref<Shape[]>([]);
 
   /**
 	 * Draws a canvas using p5.js
 	 */
-  function drawCanvas(shapeGenerator: ShapeGenerator, source?: string): void {
+  function drawCanvas(shapeGenerator: ShapeGenerator, seed?: string): void {
+    let width = 0;
+    let height = 0;
 
-    // if p5 instance already exists, destroy it
+    // if p5 instance already exists, redraw the canvas
     if (p5Instance.value) {
-      p5Instance.value.remove();
+      return p5Instance.value.redraw();
     }
-    
+
     // create a new p5 instance
     p5Instance.value = new P5((p: P5) => {
-      let width = 0;
-      let height = 0;
       
+      /**
+       * Sets up the canvas.
+       * 
+       * This function is only called once.
+       */
       p.setup = () => {
         // canvas element should fit the parent container
         const canvasWidth = p5Canvas.value?.offsetWidth || 400;
@@ -75,21 +80,26 @@ function useArtist(p5Canvas: Ref) {
         width = p.width;
         height = p.height;
 
-        // prepare shapes
-        for (let i = 0; i < 10; i++) {
-          const shape = shapeGenerator({ 
-            canvasWidth: width, 
-            canvasHeight: height, 
-            seed: source 
-          });
-          
-          shapes.value.push(shape)
-        }
+        /**
+         * Only draw once.
+         * 
+         * Note: without this, p5.js will draw continuously 
+         * which is not what we want but kinda cool
+         */
+        p.noLoop();
       };
 
+      /**
+       * Draws canvas.
+       * 
+       * This function can be called multiple times via `p5Instance.redraw()`, `p5Instance.loop()`, etc.
+       */
       p.draw = () => {
         // clear canvas
         p.clear(0, 0, p.width, p.height);
+
+        // prepare shapes
+        shapes.value = _generateShapes(shapeGenerator, width, height, seed);
 
         // draw shapes
         shapes.value.forEach((shape) => {
@@ -98,6 +108,27 @@ function useArtist(p5Canvas: Ref) {
         });
       };
     });
+    
+  }
+  
+  /**
+   * Returns a list of shapes
+   */
+  function _generateShapes(shapeGenerator: ShapeGenerator, width: number, height: number, seed?: string): Shape[] {
+    const shapes: Shape[] = [];
+    
+    // prepare shapes
+    for (let i = 0; i < 10; i++) {
+      const shape = shapeGenerator({ 
+        canvasWidth: width, 
+        canvasHeight: height, 
+        seed: seed 
+      });
+          
+      shapes.push(shape)
+    }
+
+    return shapes;
   }
 
   return {

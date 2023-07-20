@@ -64,6 +64,12 @@ const color = computed<string>(() => {
   return color
 })
 
+// watch for changes in the source prop
+watch(() => props.source, (newValue) => {
+  // draw the canvas again
+  drawCanvas(createQuadShape, newValue);
+})
+
 onMounted(() => {
   drawCanvas(createQuadShape, props.source)
 })
