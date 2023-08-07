@@ -114,57 +114,6 @@ function _getSubSeeds(seed: string, subSeedNum: number, digitsPerShape: number):
 }
 
 /**
-* Returns a coordinate that is positive and less than 1 based on a hash that is positive and less 
-* than 1. This is possible by breaking down the canvas into 6 quadrants and then return a coordinate
-* in one of the quadrants
-*/
-function _getCoordinateFromHash(hash: number, canvasWidth: number, canvasHeight: number): { x: number, y: number } {
-  const horizontalSections = 3;
-  const verticalSections = 2;
-
-  let x = 0, y = 0;
-
-  if(0 <= hash && hash < 0.25) {
-    // place coordinates in top left quadrant
-    const maxX = canvasWidth / horizontalSections;
-    const maxY = canvasHeight / verticalSections;
-
-
-    x = hash * maxX;
-    y = hash * maxY;
-  }
-
-  return { x, y }
-}
-
-/**
- * Returns the dimensions for a shape based on a given hash. The dimension includes width, height, and
- * radius of a shape.
- */
-function _getDimensionFromHash(hash: number, maxWidth: number, maxHeight: number): {width: number, height: number, radius: number} {
-  // get the last three digits from the hash
-  hash = parseInt(hash.toString().slice(-3));
-  
-  let width = hash * hash;
-  let height = hash * hash;
-  let radius = hash * hash;
-
-  while(width > maxWidth) {
-    width = width / 2;
-  }
-
-  while(height > maxHeight) {
-    height = height / 2;
-  }
-
-  while(radius > maxWidth) {
-    radius = radius / 2;
-  }
-
-  return { width, height, radius };
-}
-
-/**
  * Artist is used to create a canvas and draw shapes on it
  */
 function useArtist(p5Canvas: Ref) {
@@ -183,9 +132,14 @@ function useArtist(p5Canvas: Ref) {
 	 * Draws a canvas using p5.js
 	 */
   function drawShapes(config: ArtistConfig): void { 
+    // set seed
     seed.value = config.seed || undefined;
-    shapeNumber.value = config.shapeNumber || 5;
+
+    // set hash. If seed is not provided, then generate a random hash
     hash.value = seed.value ? getHash(seed.value, true) : getRandomNumber({ absolute: true, removeDouble: true });
+
+    // set shape number. If not provided, then use the last digit of the hash
+    shapeNumber.value = config.shapeNumber || Math.ceil((_getLastDigit(hash.value) / 2));
     
     // if p5 instance already exists, redraw the canvas
     if (p5Instance.value) {
@@ -221,14 +175,13 @@ function useArtist(p5Canvas: Ref) {
         // array of seeds that will be used to generate shapes. One hash per shape to be generated.
         const shapeSeeds: string[] = _getSubSeeds(hash.value!.toString(), shapeNumber.value, digitsPerShape);
 
-        // set canvas dimensions
-        const canvas: Canvas = {
-          width: canvasWidth.value,
-          height: canvasHeight.value
-        }
-
         // draw new shapes
         for(let i = 0; i < shapeSeeds.length; i++) {
+          // set canvas dimensions
+          const canvas: Canvas = {
+            width: canvasWidth.value,
+            height: canvasHeight.value
+          }
           
           // get previous shape
           const prevShape: Shape | undefined = shapes.value.length > 0 ? shapes.value[i - 1] : undefined;
@@ -260,7 +213,58 @@ function useArtist(p5Canvas: Ref) {
 function usePattern() {
   const { getHash, getRandomNumber } = useCrypto();
   const { convertStringToColor, getRandomHexColor } = useColor();
+
+  /**
+   * Returns a coordinate that is positive and less than 1 based on a hash that is positive and less 
+   * than 1. This is possible by breaking down the canvas into 6 quadrants and then return a coordinate
+   * in one of the quadrants
+   */
+  function _getCoordinateFromHash(hash: number, canvasWidth: number, canvasHeight: number): { x: number, y: number } {
+    const horizontalSections = 3;
+    const verticalSections = 2;
+
+    let x = 0, y = 0;
+
+    if(0 <= hash && hash < 0.25) {
+    // place coordinates in top left quadrant
+      const maxX = canvasWidth / horizontalSections;
+      const maxY = canvasHeight / verticalSections;
+
+
+      x = hash * maxX;
+      y = hash * maxY;
+    }
+
+    return { x, y }
+  }
+
+  /**
+   * Returns the dimensions for a shape based on a given hash. The dimension includes width, height, and
+   * radius of a shape.
+   */
+  function _getDimensionFromHash(hash: number, maxWidth: number, maxHeight: number): {width: number, height: number, radius: number} {
+  // get the last three digits from the hash
+    hash = parseInt(hash.toString().slice(-3));
   
+    let width = hash * hash;
+    let height = hash * hash;
+    let radius = hash * hash;
+
+    while(width > maxWidth) {
+      width = width / 2;
+    }
+
+    while(height > maxHeight) {
+      height = height / 2;
+    }
+
+    while(radius > maxWidth) {
+      radius = radius / 2;
+    }
+
+    return { width, height, radius };
+  }
+
   /**
 	 * Returns square/rectangle shape
 	 */
