@@ -19,13 +19,13 @@ const notAllowedColors = [
 ]
 
 export function useColor () {
-  const { getHash } = useCrypto()
+  const { getHash, getRandomNumber } = useCrypto()
 
   /**
    * Returns a random Material Design color
    */
   function getRandomColor (): string {
-    return materialDesignColors[Math.floor(Math.random() * materialDesignColors.length)]
+    return materialDesignColors[Math.floor(getRandomNumber() * materialDesignColors.length)]
   }
 
   /**
@@ -33,7 +33,7 @@ export function useColor () {
    */
   function getRandomHexColor (): string {
     // random hex color generator
-    const color = '#' + Math.floor(Math.random() * 16777215).toString(16)
+    const color = '#' + Math.floor(getRandomNumber() * 16777215).toString(16)
 
     // if color is white or black, generate a new one
     if (notAllowedColors.includes(color)) {
@@ -55,12 +55,14 @@ export function useColor () {
    * Returns a hex color based on a string
    */
   function convertStringToColor (str: string): string {
-    // convert string to hash
-    const hash = getHash(str)
+    // convert string to hash that is positive
+    const hash = getHash(str, true)
+    
+    // convert numerical value into a string representation (for hex conversion)
+    const hashString = hash.toString(16)
 
-    // convert hash to hex
-    const hex = Math.abs(hash).toString(16)
-      .slice(0, 6)
+    // extract first 6 characters from hash string (to create a hex color)
+    const hex = hashString.slice(0, 6)
 
     return `#${hex}`
   }
