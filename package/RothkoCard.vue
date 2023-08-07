@@ -35,7 +35,7 @@ const props = defineProps({
 const p5Canvas = ref();
 
 const { createQuadShape } = usePattern();
-const { p5Instance, drawCanvas } = useArtist(p5Canvas);
+const { p5Instance, drawShapes } = useArtist(p5Canvas);
 const {
   getMaterialColor,
   getRandomHexColor,
@@ -67,14 +67,14 @@ const color = computed<string>(() => {
 // watch for changes in the source prop
 watch(() => props.source, (newValue) => {
   // draw the canvas again
-  drawCanvas({ 
+  drawShapes({ 
     shapeGenerator: createQuadShape, 
     seed: newValue
   });
 })
 
 onMounted(() => {
-  drawCanvas({
+  drawShapes({
     shapeGenerator: createQuadShape,
     seed: props.source
   });

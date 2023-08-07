@@ -182,7 +182,7 @@ function useArtist(p5Canvas: Ref) {
   /**
 	 * Draws a canvas using p5.js
 	 */
-  function drawCanvas(config: ArtistConfig): void { 
+  function drawShapes(config: ArtistConfig): void { 
     seed.value = config.seed || undefined;
     shapeNumber.value = config.shapeNumber || 5;
     hash.value = seed.value ? getHash(seed.value, true) : getRandomNumber({ absolute: true, removeDouble: true });
@@ -250,7 +250,7 @@ function useArtist(p5Canvas: Ref) {
   return {
     p5Canvas,
     p5Instance,
-    drawCanvas
+    drawShapes
   };
 }
 
