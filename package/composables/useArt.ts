@@ -48,20 +48,32 @@ interface ArtistConfig {
 /**
  * Returns the last digit of a number. (e.g. If the number is a double, then the last digit
  * of the decimal is returned. If the last digit is 0, then the next digit to the left is 
- * returned. )
+ * returned.)
+ * 
+ * @param num - number to get the last digit from
+ * @param digitNum - number of digits to get from the number
  */
-function _getLastDigit(num: number): number {
-  const numStr = num + '';
-  
-  // get last digit of number
-  let lastDigit: number = parseInt(numStr[numStr.length - 1]);
+function _getLastDigits(num: number, digitNum?: number): number {
+  const numStr = num.toString();
 
-  while(lastDigit === 0) {
-    // get next digit to the left
-    lastDigit = parseInt(numStr[numStr.length - 2]);
+  // if digitNum is not provided or is greater than the length of the number, then set it to 1
+  if(!digitNum || (digitNum && digitNum > numStr.length)){
+    digitNum = 1;
+  }
+  
+  let lastDigits: number = parseInt(numStr[numStr.length - digitNum]);
+  
+  // this is not perfect, but it stops the 'loop of death' from happening which works for now
+  if(lastDigits === 0) {
+    lastDigits = 1;
   }
 
-  return lastDigit;
+  //while(lastDigits === 0) {
+  //  // get next digit to the left
+  //  lastDigits = parseInt(numStr[numStr.length - digitNum + 1]);
+  //}
+
+  return lastDigits;
 }
 
 /**
@@ -139,7 +151,7 @@ function useArtist(p5Canvas: Ref) {
     hash.value = seed.value ? getHash(seed.value, true) : getRandomNumber({ absolute: true, removeDouble: true });
 
     // set shape number. If not provided, then use the last digit of the hash
-    shapeNumber.value = config.shapeNumber || Math.ceil((_getLastDigit(hash.value) / 2));
+    shapeNumber.value = config.shapeNumber || Math.ceil((_getLastDigits(hash.value) / 2));
     
     // if p5 instance already exists, redraw the canvas
     if (p5Instance.value) {
@@ -170,11 +182,11 @@ function useArtist(p5Canvas: Ref) {
         shapes.value = [];
 
         // number of digits from seed that will be used to generate a shape, respectively.
-        const digitsPerShape = _getLastDigit(hash.value!);
+        const digitsPerShape = _getLastDigits(hash.value!);
 
         // array of seeds that will be used to generate shapes. One hash per shape to be generated.
         const shapeSeeds: string[] = _getSubSeeds(hash.value!.toString(), shapeNumber.value, digitsPerShape);
-
+        
         // draw new shapes
         for(let i = 0; i < shapeSeeds.length; i++) {
           // set canvas dimensions
@@ -216,23 +228,56 @@ function usePattern() {
 
   /**
    * Returns a coordinate that is positive and less than 1 based on a hash that is positive and less 
-   * than 1. This is possible by breaking down the canvas into 6 quadrants and then return a coordinate
-   * in one of the quadrants
+   * than 1. This is possible by breaking down the canvas into a 3x3 grid and returning a coordinate
+   * within this space.
+   * 
+   * note: this function never returns a coordinate that is in the last column or row of the grid to 
+   * avoid shapes being drawn outside of the canvas
    */
-  function _getCoordinateFromHash(hash: number, canvasWidth: number, canvasHeight: number): { x: number, y: number } {
-    const horizontalSections = 3;
-    const verticalSections = 2;
-
+  function _getCoordinateFromHash(hash: number, maxHorizontal: number, maxVertical: number): { x: number, y: number } {
     let x = 0, y = 0;
+    
+    /**
+     * sectionWidth and sectionHeight are used to break down the canvas into 6 quadrants
+     * 
+     * note: cuts the canvas in half vertically and horizontally to avoid shapes being drawn
+     * outside of the canvas
+     */
+    const sectionWidth = (maxHorizontal / 2) / 3;
+    const sectionHeight = (maxVertical / 2) / 3;
+    
+    // indicators are used to determine which quadrant the shape will be placed in
+    const xIndicator = _getLastDigits(hash + hash);
+    const yIndicator = _getLastDigits(hash * hash);
 
-    if(0 <= hash && hash < 0.25) {
-    // place coordinates in top left quadrant
-      const maxX = canvasWidth / horizontalSections;
-      const maxY = canvasHeight / verticalSections;
+    /**
+     * determine which quadrant the shape will be placed in. 0-3 is 
+     * the left half of the canvas, 3-6 is the center, and 6-9 is
+     * the right half
+     * 
+     * note: math isn't thought out well here. It just needs to be reproducible
+     */
+    if(0 <= xIndicator && xIndicator <= 3) {
+      x = sectionWidth - (sectionWidth - xIndicator);
+    } else if(3 < xIndicator && xIndicator <= 6) {
+      x = (sectionWidth * 2) - xIndicator;
+    } else {
+      x = (sectionWidth * 3) - xIndicator;
+    }
 
-
-      x = hash * maxX;
-      y = hash * maxY;
+    /**
+     * determine which quadrant the shape will be placed in. 0-3 is
+     * the top half of the canvas, 3-6 is the center, and 6-9 is
+     * the bottom half
+     * 
+     * note: math isn't thought out well here. It just needs to be reproducible
+     */
+    if(0 <= yIndicator && yIndicator <= 3) {
+      y = sectionHeight - (sectionHeight - yIndicator);
+    } else if(3 < yIndicator && yIndicator <= 6) {
+      y = (sectionHeight * 2) - yIndicator;
+    } else {
+      y = (sectionHeight * 3) - yIndicator;
     }
 
     return { x, y }
