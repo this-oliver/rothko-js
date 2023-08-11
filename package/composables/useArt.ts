@@ -42,7 +42,7 @@ interface ArtistConfig {
   /**
    * Function that draws a shapes
    */
-  shapeGenerator: (seed: string, canvas: Canvas, prevShape?: Shape) => Shape;
+  shapeGenerator: (p: P5, seed: string, canvas: Canvas, prevShape?: Shape) => Shape;
 }
 
 /**
@@ -198,14 +198,10 @@ function useArtist(p5Canvas: Ref) {
           // get previous shape
           const prevShape: Shape | undefined = shapes.value.length > 0 ? shapes.value[i - 1] : undefined;
           
-          // generate shape
-          const shape = config.shapeGenerator(shapeSeeds[i], canvas, prevShape);
-
           // draw shape
-          p.fill(shape.color);
-          p.rect(shape.x, shape.y, shape.width, shape.height);
+          const shape = config.shapeGenerator(p, shapeSeeds[i], canvas, prevShape);
 
-          // add shape to shapes array
+          // store shape
           shapes.value.push(shape);
         }
       };
@@ -313,7 +309,7 @@ function usePattern() {
   /**
 	 * Returns square/rectangle shape
 	 */
-  function createQuadShape(seed: string, canvas: Canvas, prevShape?: Shape): Shape {
+  function createQuadShape(p: P5, seed: string, canvas: Canvas, prevShape?: Shape): Shape {
     const hash = getHash(seed || getRandomNumber() + '', true);
     const color = seed ? convertStringToColor(hash + '') : getRandomHexColor();
     
@@ -331,7 +327,20 @@ function usePattern() {
       }
     }
 
-    return { x, y, width, height, color };
+    // define shape
+    const shape: Shape = {
+      x,
+      y,
+      width,
+      height,
+      color
+    };
+
+    // draw shape
+    p.fill(shape.color);
+    p.rect(shape.x, shape.y, shape.width, shape.height);
+
+    return shape;
   }
 
   return {
