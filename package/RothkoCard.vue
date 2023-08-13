@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch, type PropType } from 'vue';
+import type { Pattern, ShapeGenerator } from './composables';
 import { useArtist, useColor, usePattern } from './composables';
 
 const props = defineProps({
   source: {
     type: String,
     default: undefined
+  },
+  pattern: {
+    type: String as PropType<Pattern>,
+    default: 'quad'
   },
   color: {
     type: String,
@@ -34,7 +39,7 @@ const props = defineProps({
  */
 const p5Canvas = ref();
 
-const { createQuadShape } = usePattern();
+const { createQuadShape, createCircleShape, createTriangleShape } = usePattern();
 const { p5Instance, drawShapes } = useArtist(p5Canvas);
 const {
   getMaterialColor,
@@ -64,12 +69,32 @@ const color = computed<string>(() => {
   return color
 })
 
+function getPattern(type: Pattern): ShapeGenerator {
+  switch (type) {
+  case 'quad':
+    return createQuadShape
+  case 'circle':
+    return createCircleShape
+  case 'triangle':
+    return createTriangleShape
+  }
+}
+
 // watch for changes in the source prop
 watch(() => props.source, (newValue) => {
   // draw the canvas again
   drawShapes({ 
-    shapeGenerator: createQuadShape, 
+    shapeGenerator: getPattern(props.pattern), 
     seed: newValue
+  });
+})
+
+// watch for changes in the pattern prop
+watch(() => props.pattern, (newValue) => {
+  // draw the canvas again
+  drawShapes({ 
+    shapeGenerator: getPattern(newValue), 
+    seed: props.source
   });
 })
 

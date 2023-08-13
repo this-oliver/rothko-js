@@ -11,7 +11,7 @@ import { useColor, useCrypto } from './index';
 /**
  * Canvas that will be drawn on
  */
-interface Canvas {
+export interface Canvas {
 	width: number;
 	height: number;
 }
@@ -19,12 +19,34 @@ interface Canvas {
 /**
  * Shape that will be drawn on the canvas
  */
-interface Shape {
+export interface Shape {
+  seed: string;
 	x: number;
 	y: number;
-	width: number;
-	height: number;
 	color: string;
+}
+
+export interface QuadShape extends Shape {
+  width: number;
+  height: number;
+}
+
+export interface TriangleShape extends Shape {
+  width: number;
+  height: number;
+}
+
+export interface CircleShape extends Shape {
+  diameter: number;
+}
+
+export type Pattern = 'quad' | 'circle' | 'triangle';
+
+/**
+ * Function that draws a shape
+ */
+export interface ShapeGenerator {
+  (p: P5, seed: string, canvas: Canvas, prevShape?: Shape): Shape;
 }
 
 /**
@@ -42,7 +64,7 @@ interface ArtistConfig {
   /**
    * Function that draws a shapes
    */
-  shapeGenerator: (p: P5, seed: string, canvas: Canvas, prevShape?: Shape) => Shape;
+  shapeGenerator: ShapeGenerator;
 }
 
 /**
@@ -152,10 +174,15 @@ function useArtist(p5Canvas: Ref) {
 
     // set shape number. If not provided, then use the last digit of the hash
     shapeNumber.value = config.shapeNumber || Math.ceil((_getLastDigits(hash.value) / 2));
-    
-    // if p5 instance already exists, redraw the canvas
+
+    /**
+     * Removes the p5 instance from the DOM if it exists to allow for
+     * a new pattern `ShapeGenerator` to be configured instead of using
+     * the `p5Instance.value.remove()` method which re-uses the previous
+     * pattern's `ShapeGenerator` function.
+     */
     if (p5Instance.value) {
-      return p5Instance.value.redraw();
+      p5Instance.value.remove();
     }
 
     // create a new p5 instance
@@ -230,17 +257,17 @@ function usePattern() {
    * note: this function never returns a coordinate that is in the last column or row of the grid to 
    * avoid shapes being drawn outside of the canvas
    */
-  function _getCoordinateFromHash(hash: number, maxHorizontal: number, maxVertical: number): { x: number, y: number } {
+  function _getCoordinateFromHash(hash: number, maxHorizontal: number, maxVertical: number, useWholeCanvase?: boolean): { x: number, y: number } {
     let x = 0, y = 0;
     
     /**
      * sectionWidth and sectionHeight are used to break down the canvas into 6 quadrants
      * 
-     * note: cuts the canvas in half vertically and horizontally to avoid shapes being drawn
-     * outside of the canvas
+     * note: if `useWholeCanvase` is false, then the values are decided by cutting the canvas 
+     * in half vertically and horizontally to avoid shapes being drawn outside of the canvas
      */
-    const sectionWidth = (maxHorizontal / 2) / 3;
-    const sectionHeight = (maxVertical / 2) / 3;
+    const sectionWidth = useWholeCanvase ? maxHorizontal / 3 : (maxHorizontal / 2) / 3;
+    const sectionHeight = useWholeCanvase ? maxVertical / 3 : (maxHorizontal / 2) / 3;
     
     // indicators are used to determine which quadrant the shape will be placed in
     const xIndicator = _getLastDigits(hash + hash);
@@ -283,13 +310,13 @@ function usePattern() {
    * Returns the dimensions for a shape based on a given hash. The dimension includes width, height, and
    * radius of a shape.
    */
-  function _getDimensionFromHash(hash: number, maxWidth: number, maxHeight: number): {width: number, height: number, radius: number} {
+  function _getDimensionFromHash(hash: number, maxWidth: number, maxHeight: number): {width: number, height: number, diameter: number} {
   // get the last three digits from the hash
     hash = parseInt(hash.toString().slice(-3));
   
     let width = hash * hash;
     let height = hash * hash;
-    let radius = hash * hash;
+    let diameter = hash;
 
     while(width > maxWidth) {
       width = width / 2;
@@ -299,17 +326,17 @@ function usePattern() {
       height = height / 2;
     }
 
-    while(radius > maxWidth) {
-      radius = radius / 2;
+    while(diameter > maxWidth) {
+      diameter = diameter / 2;
     }
 
-    return { width, height, radius };
+    return { width, height, diameter };
   }
 
   /**
 	 * Returns square/rectangle shape
 	 */
-  function createQuadShape(p: P5, seed: string, canvas: Canvas, prevShape?: Shape): Shape {
+  function createQuadShape(p: P5, seed: string, canvas: Canvas, prevShape?: Shape): QuadShape {
     const hash = getHash(seed || getRandomNumber() + '', true);
     const color = seed ? convertStringToColor(hash + '') : getRandomHexColor();
     
@@ -328,7 +355,8 @@ function usePattern() {
     }
 
     // define shape
-    const shape: Shape = {
+    const shape: QuadShape = {
+      seed,
       x,
       y,
       width,
@@ -343,8 +371,92 @@ function usePattern() {
     return shape;
   }
 
+  /**
+	 * Returns circle shape
+	 */
+  function createCircleShape(p: P5, seed: string, canvas: Canvas, prevShape?: Shape): CircleShape {
+    const hash = getHash(seed || getRandomNumber() + '', true);
+    const color = seed ? convertStringToColor(hash + '') : getRandomHexColor();
+    
+    let { x, y } = _getCoordinateFromHash(hash, canvas.width, canvas.height, false);
+    const { diameter } = _getDimensionFromHash(hash, canvas.width, canvas.height);
+
+    // if previous shape exists, make sure that the new shape's coordinates are not within 100 pixels of the previous shape
+    if(prevShape) {
+      if(prevShape.x - 100 < x && x < prevShape.x + 100) {
+        x = x + 100;
+      }
+
+      if(prevShape.y - 100 < y && y < prevShape.y + 100) {
+        y = y + 100;
+      }
+    }
+
+    // define shape
+    const shape: CircleShape = {
+      seed,
+      x,
+      y,
+      diameter,
+      color
+    };
+
+    // draw shape
+    p.fill(shape.color);
+    p.circle(shape.x, shape.y, shape.diameter * 2);
+
+    return shape;
+  }
+
+  /**
+	 * Returns triangle shape
+	 */
+  function createTriangleShape(p: P5, seed: string, canvas: Canvas, prevShape?: Shape): TriangleShape {
+    const hash = getHash(seed || getRandomNumber() + '', true);
+    const color = seed ? convertStringToColor(hash + '') : getRandomHexColor();
+    
+    let { x, y } = _getCoordinateFromHash(hash, canvas.width, canvas.height, false);
+    const { width, height } = _getDimensionFromHash(hash, canvas.width, canvas.height);
+
+    // if previous shape exists, make sure that the new shape's coordinates are not within 100 pixels of the previous shape
+    if(prevShape) {
+      if(prevShape.x - 100 < x && x < prevShape.x + 100) {
+        x = x + 100;
+      }
+
+      if(prevShape.y - 100 < y && y < prevShape.y + 100) {
+        y = y + 100;
+      }
+    }
+
+    // define shape
+    const shape: TriangleShape = {
+      seed,
+      x,
+      y,
+      width,
+      height,
+      color
+    };
+
+    // draw shape
+    p.fill(shape.color);
+    p.triangle(
+      shape.x,
+      shape.y,
+      shape.x + shape.width,
+      shape.y,
+      shape.x + shape.width,
+      shape.y + shape.height
+    );
+
+    return shape;
+  }
+
   return {
-    createQuadShape
+    createQuadShape,
+    createCircleShape,
+    createTriangleShape
   };
 }
 
