@@ -2,8 +2,13 @@
 import { ref } from 'vue';
 import { useDisplay } from 'vuetify';
 import RothkoCard from '../package/RothkoCard.vue';
+import type { Pattern } from '../package/composables';
+import { usePattern } from '../package/composables';
 
 const { smAndDown } = useDisplay();
+const { patterns } = usePattern();
+
+const currentPattern = ref<Pattern>(patterns[0]);
 
 const text = ref<string>();
 
@@ -35,7 +40,19 @@ const links = ref([
             md="8">
             <rothko-card
               id="canvas"
+              :pattern="currentPattern"
               :source="text" />
+          </v-col>
+
+          <v-col
+            cols="11"
+            md="8">
+            <v-btn
+              v-for="p in patterns"
+              :key="p"
+              class="mx-1"
+              :color="currentPattern === p ? 'primary' : ''"
+              @click="currentPattern = p">{{ p }}</v-btn>
           </v-col>
 
           <v-col
