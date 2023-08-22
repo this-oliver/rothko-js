@@ -5,8 +5,9 @@
     "type": "git",
     "url": "git+https://github.com/this-oliver/rothko-js.git"
   },
-  "version": "0.5.7",
-  "main": "./package/rothko-js.umd.js",
+  "version": "0.5.8",
+  "main": "./package/index.umd.js",
+  "types": "./package/index.d.ts",
   "packageManager": "pnpm@7.29.0",
   "scripts": {
     "build": "npm run clear && vue-tsc --noEmit && vite build --mode lib",

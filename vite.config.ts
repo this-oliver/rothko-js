@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
       lib: {
         entry: fileURLToPath(new URL('./lib/index.ts', import.meta.url)),
         name: 'RothkoJs',
-        fileName: 'rothko-js'
+        fileName: 'index'
       },
       outDir: 'package',
       emptyOutDir: true,
