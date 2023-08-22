@@ -8,7 +8,7 @@ export default defineConfig(({ mode }) => {
   const userConfig: UserConfig = {}
 
   const commonPlugins = [ 
-    vue()
+    vue(),
   ]
 
   if (mode === 'lib') {
@@ -31,7 +31,8 @@ export default defineConfig(({ mode }) => {
         }
       }
     }
-  } else {
+
+    // add type declaration
     commonPlugins.push(
       dts({ include: './lib' })
     )
