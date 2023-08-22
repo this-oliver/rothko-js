@@ -143,8 +143,8 @@ function useArtist(p5Canvas: Ref) {
         // clear shapes
         shapes.value = [];
 
-        // number of digits from seed that will be used to generate a shape, respectively.
-        const digitsPerShape = getLastDigits(hash.value!);
+        // use last digit of hash to determine how many digits to use per shape. If digit is 0, then use 1 shape
+        const digitsPerShape = getLastDigits(hash.value!) || 1;
 
         // array of seeds that will be used to generate shapes. One hash per shape to be generated.
         const shapeSeeds: string[] = getSubSeeds(
@@ -162,7 +162,7 @@ function useArtist(p5Canvas: Ref) {
           };
 
           // get previous shape
-          const prevShape: Shape | undefined =						shapes.value.length > 0 ? shapes.value[i - 1] : undefined;
+          const prevShape: Shape | undefined = shapes.value.length > 0 ? shapes.value[i - 1] : undefined;
 
           // draw shape
           const shape = config.shapeGenerator(

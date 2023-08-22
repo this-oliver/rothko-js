@@ -2,7 +2,7 @@
   "name": "rothko-js",
   "description": "Generate colors and visual patterns based on text-based input",
   "repository": "this-oliver/rothko-js",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "main": "./package/rothko-js.umd.js",
   "packageManager": "pnpm@7.29.0",
   "scripts": {
