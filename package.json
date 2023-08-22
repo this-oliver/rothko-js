@@ -2,14 +2,15 @@
   "name": "rothko-js",
   "description": "Generate colors and visual patterns based on text-based input",
   "repository": "this-oliver/rothko-js",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "main": "./package/rothko-js.umd.js",
   "packageManager": "pnpm@7.29.0",
   "scripts": {
     "build": "npm run clear && vue-tsc --noEmit && vite build --mode lib",
-    "build:demo": "npm run clear && vue-tsc --noEmit && vite build",
+    "build:demo": "npm run clear:demo && vue-tsc --noEmit && vite build",
     "bump": "npx fistbump",
-    "clear": "rm -rf dist && rm -rf package",
+    "clear": "rm -rf package",
+    "clear:demo": "rm -rf dist",
     "dev": "vite",
     "lint": "eslint --ext .ts,.vue --fix .",
     "prepack": "npm test && npm run lint && npm run build",
@@ -18,6 +19,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "html2canvas": "^1.4.1",
     "p5": "^1.6.0",
     "vue": "^3.2.47",
     "vuetify": "^3.2.1"

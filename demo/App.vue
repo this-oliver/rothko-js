@@ -1,4 +1,8 @@
 <script setup lang="ts">
+// read npm package version from package.json
+import { version } from '../package.json';
+
+import html2canvas from 'html2canvas';
 import { ref } from 'vue';
 import { useDisplay } from 'vuetify';
 import RothkoCard from '../lib/RothkoCard.vue';
@@ -19,6 +23,22 @@ const links = ref([
   }
 ])
 
+async function downloadCanvas() {
+  try {
+    const element = document.getElementById('canvas') as HTMLCanvasElement;
+    const canvas = await html2canvas(element)
+
+    const link = document.createElement('a');
+    link.download = 'rothko.png';
+    link.href = canvas.toDataURL();
+    link.click();
+  
+  } catch (error) {
+    console.error(error);
+    alert(`Something went wrong: ${(error as Error).message}`);
+  }
+}
+
 </script>
 
 <template>
@@ -28,7 +48,7 @@ const links = ref([
       flat
       color="transparent">
       <v-spacer />
-      <h1 class="text-primary">Rothko</h1>
+      <h1 class="text-primary">Rothko <small>v.{{ version }}</small></h1>
       <v-spacer />
     </v-app-bar>
 
@@ -65,6 +85,11 @@ const links = ref([
               clearable
               label="Input Text"
               placeholder="Try entering a few words, or a sentence, or a paragraph into the input field above and see what happens"/>
+
+            <v-btn
+              class="mt-2"
+              variant="outlined"
+              @click="downloadCanvas">Download</v-btn>
           </v-col>
         </v-row>
       </v-container>
