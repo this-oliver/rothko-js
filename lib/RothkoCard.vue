@@ -134,4 +134,3 @@ onUnmounted(() => {
   width: 100%;
 }
 </style>
-./utils/color
