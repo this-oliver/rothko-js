@@ -8,18 +8,17 @@ export default defineConfig(({ mode }) => {
   const userConfig: UserConfig = {}
 
   const commonPlugins = [ 
-    vue(), 
-    dts({ include: './package' })
+    vue()
   ]
 
   if (mode === 'lib') {
     userConfig.build = {
       lib: {
-        entry: fileURLToPath(new URL('./package/index.ts', import.meta.url)),
+        entry: fileURLToPath(new URL('./lib/index.ts', import.meta.url)),
         name: 'RothkoJs',
         fileName: 'rothko-js'
       },
-      outDir: 'lib',
+      outDir: 'package',
       emptyOutDir: true,
       sourcemap: false,
       cssCodeSplit: true,
@@ -32,7 +31,10 @@ export default defineConfig(({ mode }) => {
         }
       }
     }
-    userConfig.plugins = [ ...commonPlugins ]
+  } else {
+    commonPlugins.push(
+      dts({ include: './lib' })
+    )
   }
 
   return {

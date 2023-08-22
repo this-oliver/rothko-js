@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useDisplay } from 'vuetify';
-import RothkoCard from '../package/RothkoCard.vue';
-import type { Pattern } from '../package/composables/useArt';
-import { usePattern } from '../package/composables/useArt';
+import RothkoCard from '../lib/RothkoCard.vue';
+import type { Pattern } from '../lib/composables/useArt';
+import { usePattern } from '../lib/composables/useArt';
 
 const { smAndDown } = useDisplay();
 const { patterns } = usePattern();
