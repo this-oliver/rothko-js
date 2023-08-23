@@ -33,13 +33,14 @@ export interface QuadShape extends Shape {
 	height: number;
 }
 
+export interface CircleShape extends Shape {
+	diameter: number;
+}
+
 export interface TriangleShape extends Shape {
 	width: number;
 	height: number;
-}
-
-export interface CircleShape extends Shape {
-	diameter: number;
+  coordinates: { x: number, y: number }[]; // triangle has 3 coordinates
 }
 
 /**
@@ -311,7 +312,7 @@ function usePattern() {
       hash,
       canvas.width,
       canvas.height,
-      false
+      true
     );
     const { width, height } = getDimensionFromHash(
       hash,
@@ -333,22 +334,33 @@ function usePattern() {
     // define shape
     const shape: TriangleShape = {
       seed,
-      x,
-      y,
+      color,
       width,
       height,
-      color
+      x,
+      y,
+      coordinates: [
+        { x, y } // first coordinate is the same as the shape's x and y coordinates
+      ]
     };
+
+    // set remaining two coordinates of triangle's three points
+    const subSeeds = getSubSeeds(hash.toString(), 2, 3);
+    for(let i = 0; i < subSeeds.length; i++) {
+      const hash = getHash(subSeeds[i]);
+      const { x, y } = getCoordinateFromHash(hash, canvas.width, canvas.height, true);
+      shape.coordinates.push({ x, y });
+    }
 
     // draw shape
     p.fill(shape.color);
     p.triangle(
-      shape.x,
-      shape.y,
-      shape.x + shape.width,
-      shape.y,
-      shape.x + shape.width,
-      shape.y + shape.height
+      shape.coordinates[0].x,
+      shape.coordinates[0].y,
+      shape.coordinates[1].x,
+      shape.coordinates[1].y,
+      shape.coordinates[2].x,
+      shape.coordinates[2].y
     );
 
     return shape;
