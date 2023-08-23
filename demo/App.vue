@@ -39,6 +39,12 @@ async function downloadCanvas() {
   }
 }
 
+function capitalize(string: any): string {
+  if (typeof string !== 'string') return '';
+
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 </script>
 
 <template>
@@ -60,19 +66,21 @@ async function downloadCanvas() {
             md="8">
             <rothko-card
               id="canvas"
-              :pattern="currentPattern"
-              :source="text" />
+              :source="text"
+              :pattern="currentPattern" />
           </v-col>
 
           <v-col
             cols="11"
             md="8">
-            <v-btn
-              v-for="p in patterns"
-              :key="p"
-              class="mx-1"
-              :color="currentPattern === p ? 'primary' : ''"
-              @click="currentPattern = p">{{ p }}</v-btn>
+            <v-select
+              v-model="currentPattern"
+              :items="patterns"
+              :item-title="item => capitalize(item)"
+              :item-value="item => item"
+              label="Pattern"
+              variant="outlined">
+            </v-select>
           </v-col>
 
           <v-col
@@ -85,11 +93,38 @@ async function downloadCanvas() {
               clearable
               label="Input Text"
               placeholder="Try entering a few words, or a sentence, or a paragraph into the input field above and see what happens"/>
-
+              
             <v-btn
-              class="mt-2"
+              class="mt-1"
+              color="primary"
               variant="outlined"
               @click="downloadCanvas">Download</v-btn>
+          </v-col>
+
+          
+          <v-col
+            class="mt-2"
+            cols="11"
+            md="8">
+            <v-divider class="my-4" />
+          
+            <h1><code>Rothko-js</code></h1>
+            <p>A simple Vue3 component that generates shapes and patterns based on text input.</p>
+
+            <h2>Features</h2>
+            <ul>
+              <li>🖌️ Generate shapes and patterns based on text input</li>
+              <li>🎨 Apply colors based on text input</li>
+              <li>🪄 Do all of the above deterministically (always get the same shapes, patterns, and colors for the same input)</li>
+            </ul>
+            
+            <h2>Why use <code>Rothko-js</code></h2>
+            <p>There are a number of pain points that this tool addresses:</p>
+            <ul>
+              <li>large bodies of text with no graphics are boring</li>
+              <li>graphics take time/money to create</li>
+              <li>hosting images (graphics) can get expensive</li>
+            </ul>
           </v-col>
         </v-row>
       </v-container>
@@ -129,5 +164,13 @@ async function downloadCanvas() {
 <style>
 #canvas {
   min-height: 50vh;
+}
+
+h2 {
+  padding-top: 1rem;
+}
+
+ul {
+  padding-left: 2rem;
 }
 </style>

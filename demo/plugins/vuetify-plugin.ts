@@ -40,7 +40,7 @@ const darkTheme: ThemeDefinition = {
     success: '#4CAF50',
     warning: '#FF9800',
     background: '#212121',
-    surface: '#37474F',
+    surface: '#01421A',
     onPrimary: '#FFFFFF',
     onSecondary: '#212121',
     onAccent: '#FFFFFF',
