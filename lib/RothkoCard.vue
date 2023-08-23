@@ -19,11 +19,15 @@ const props = defineProps({
   },
   height: {
     type: String,
-    default: '100px'
+    default: undefined
   },
   width: {
     type: String,
-    default: '100%'
+    default: undefined
+  },
+  marging: {
+    type: String,
+    default: undefined
   },
   padding: {
     type: String,
@@ -63,6 +67,16 @@ const color = computed<string>(() => {
   }
 
   return color
+})
+
+const style = computed<string>(() => {
+  return `
+    background-color: ${color.value};
+    height: ${props.height};
+    width: ${props.width};
+    padding: ${props.padding};
+    border-radius: ${props.borderRadius};
+  `
 })
 
 function getPattern(type: Pattern): ShapeGenerator {
@@ -110,14 +124,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div
-    :style="{
-      backgroundColor: color,
-      height: height,
-      width: width,
-      padding: padding,
-      borderRadius: borderRadius
-    }">
+  <div :style="style">
 
     <!-- WARNING: change id and ref with caution  -->
     <div
