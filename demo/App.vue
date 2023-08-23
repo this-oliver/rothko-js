@@ -2,12 +2,12 @@
 // read npm package version from package.json
 import { version } from '../package.json';
 
+import RothkoCard from '@lib/RothkoCard.vue';
+import type { Pattern } from '@lib/composables/useArt';
+import { usePattern } from '@lib/composables/useArt';
 import html2canvas from 'html2canvas';
 import { ref } from 'vue';
 import { useDisplay } from 'vuetify';
-import RothkoCard from '../lib/RothkoCard.vue';
-import type { Pattern } from '../lib/composables/useArt';
-import { usePattern } from '../lib/composables/useArt';
 
 const { smAndDown } = useDisplay();
 const { patterns } = usePattern();

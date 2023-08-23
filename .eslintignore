@@ -1,14 +1,14 @@
 package
 dist
 node_modules
+demo/public
+demo/index.html
 .vscode
 .eslintrc
 .gitignore
 .npmignore
-index.html
 env.d.ts
 package.json
-package-lock.json
 pnpm-lock.yaml
 README.md
 tsconfig.json
