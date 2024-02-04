@@ -5,7 +5,7 @@
     "type": "git",
     "url": "git+https://github.com/this-oliver/rothko-js.git"
   },
-  "version": "0.5.17",
+  "version": "0.5.18",
   "main": "./package/index.umd.js",
   "types": "./package/index.d.ts",
   "packageManager": "pnpm@7.29.0",
