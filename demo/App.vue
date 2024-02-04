@@ -20,6 +20,14 @@ const links = ref([
   {
     title: 'Source Code',
     link: 'https://github.com/this-oliver/rothko-js'
+  },
+  {
+    title: 'Documentation',
+    link: 'https://github.com/this-oliver/rothko-js?tab=readme-ov-file#install'
+  },
+  {
+    title: 'Inspiration',
+    link: 'https://www.oliverrr.net/notes/text-based-generative-color-and-shapes-heotxz'
   }
 ])
 
