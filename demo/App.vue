@@ -32,6 +32,12 @@ const links = ref([
 ])
 
 async function downloadCanvas() {
+  // skip if not in browser
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    console.warn('This function can only be run in a browser environment.');
+    return;
+  }
+  
   try {
     const element = document.getElementById('canvas') as HTMLCanvasElement;
     const canvas = await html2canvas(element)
