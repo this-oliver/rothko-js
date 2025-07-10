@@ -1,9 +1,5 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
-
 dependencies:
   html2canvas:
     specifier: ^1.4.1
@@ -44,8 +40,8 @@ devDependencies:
     specifier: ^9.9.0
     version: 9.9.0(eslint@8.36.0)
   fist-bump:
-    specifier: ^1.1.0
-    version: 1.1.0
+    specifier: ^2.3.2
+    version: 2.3.2
   lint-staged:
     specifier: ^13.2.2
     version: 13.2.2
@@ -1417,8 +1413,8 @@ packages:
       path-exists: 4.0.0
     dev: true
 
-  /fist-bump@1.1.0:
-    resolution: {integrity: sha512-ZYAM/Ih0XZgSky1e0G0h7d5L5FzNl0k4dLizJuYqGssiTVBFR+EdWpwYSLMGhrHArjU3Trlz8pH/BOQ369PRqw==}
+  /fist-bump@2.3.2:
+    resolution: {integrity: sha512-MsQEYL3dbwG0MjXjGBa6+VpnSmyq94B4VSUgTu3JR+luzHqXf96rxZY5C+HxHcTVMXAh0OM++xG5ApCYLZKsKA==}
     hasBin: true
     dependencies:
       shelljs: 0.8.5
@@ -2758,3 +2754,7 @@ packages:
     optionalDependencies:
       commander: 9.5.0
     dev: true
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
