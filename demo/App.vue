@@ -1,13 +1,13 @@
 <script setup lang="ts">
-// read npm package version from package.json
-import { version } from '../package.json';
+import type { Pattern } from "@lib/composables/useArt";
 
-import RothkoCard from '@lib/RothkoCard.vue';
-import type { Pattern } from '@lib/composables/useArt';
-import { usePattern } from '@lib/composables/useArt';
-import html2canvas from 'html2canvas';
-import { ref } from 'vue';
-import { useDisplay } from 'vuetify';
+import { usePattern } from "@lib/composables/useArt";
+import RothkoCard from "@lib/RothkoCard.vue";
+import html2canvas from "html2canvas";
+import { ref } from "vue";
+import { useDisplay } from "vuetify";
+// read npm package version from package.json
+import { version } from "../package.json";
 
 const { smAndDown } = useDisplay();
 const { patterns } = usePattern();
@@ -18,47 +18,47 @@ const text = ref<string>();
 
 const links = ref([
   {
-    title: 'Source Code',
-    link: 'https://github.com/this-oliver/rothko-js'
+    title: "Source Code",
+    link: "https://github.com/this-oliver/rothko-js"
   },
   {
-    title: 'Documentation',
-    link: 'https://github.com/this-oliver/rothko-js?tab=readme-ov-file#install'
+    title: "Documentation",
+    link: "https://github.com/this-oliver/rothko-js?tab=readme-ov-file#install"
   },
   {
-    title: 'Inspiration',
-    link: 'https://www.oliverrr.net/notes/text-based-generative-color-and-shapes-heotxz'
+    title: "Inspiration",
+    link: "https://www.oliverrr.net/notes/text-based-generative-color-and-shapes-heotxz"
   }
-])
+]);
 
 async function downloadCanvas() {
   // skip if not in browser
-  if (typeof window === 'undefined' || typeof document === 'undefined') {
-    console.warn('This function can only be run in a browser environment.');
+  if (typeof window === "undefined" || typeof document === "undefined") {
+    console.warn("This function can only be run in a browser environment.");
     return;
   }
-  
-  try {
-    const element = document.getElementById('canvas') as HTMLCanvasElement;
-    const canvas = await html2canvas(element)
 
-    const link = document.createElement('a');
-    link.download = 'rothko.png';
+  try {
+    const element = document.getElementById("canvas") as HTMLCanvasElement;
+    const canvas = await html2canvas(element);
+
+    const link = document.createElement("a");
+    link.download = "rothko.png";
     link.href = canvas.toDataURL();
     link.click();
-  
   } catch (error) {
     console.error(error);
+    // eslint-disable-next-line no-alert
     alert(`Something went wrong: ${(error as Error).message}`);
   }
 }
 
 function capitalize(string: any): string {
-  if (typeof string !== 'string') return '';
+  if (typeof string !== "string")
+    return "";
 
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
-
 </script>
 
 <template>
@@ -68,7 +68,9 @@ function capitalize(string: any): string {
       flat
       color="transparent">
       <v-spacer />
-      <h1 class="text-primary">Rothko <small>v.{{ version }}</small></h1>
+      <h1 class="text-primary">
+        Rothko <small>v.{{ version }}</small>
+      </h1>
       <v-spacer />
     </v-app-bar>
 
@@ -78,7 +80,7 @@ function capitalize(string: any): string {
           <v-col
             cols="11"
             md="8">
-            <rothko-card
+            <RothkoCard
               id="canvas"
               :source="text"
               :pattern="currentPattern" />
@@ -93,8 +95,7 @@ function capitalize(string: any): string {
               :item-title="item => capitalize(item)"
               :item-value="item => item"
               label="Pattern"
-              variant="outlined">
-            </v-select>
+              variant="outlined" />
           </v-col>
 
           <v-col
@@ -106,22 +107,23 @@ function capitalize(string: any): string {
               counter
               clearable
               label="Input Text"
-              placeholder="Try entering a few words, or a sentence, or a paragraph into the input field above and see what happens"/>
-              
+              placeholder="Try entering a few words, or a sentence, or a paragraph into the input field above and see what happens" />
+
             <v-btn
               class="mt-1"
               color="primary"
               variant="outlined"
-              @click="downloadCanvas">Download</v-btn>
+              @click="downloadCanvas">
+              Download
+            </v-btn>
           </v-col>
 
-          
           <v-col
             class="mt-2"
             cols="11"
             md="8">
             <v-divider class="my-4" />
-          
+
             <h1><code>Rothko-js</code></h1>
             <p>A simple Vue3 component that generates shapes and patterns based on text input.</p>
 
@@ -131,7 +133,7 @@ function capitalize(string: any): string {
               <li>🎨 Apply colors based on text input</li>
               <li>🪄 Do all of the above deterministically (always get the same shapes, patterns, and colors for the same input)</li>
             </ul>
-            
+
             <h2>Why use <code>Rothko-js</code></h2>
             <p>There are a number of pain points that this tool addresses:</p>
             <ul>
@@ -166,7 +168,7 @@ function capitalize(string: any): string {
               class="mx-2"
               href="https://www.oliverrr.net"
               target="_blank">Oliverrr 🤠</a>
-            
+
             <span>&copy; {{ new Date().getFullYear() }}</span>
           </v-col>
         </v-row>

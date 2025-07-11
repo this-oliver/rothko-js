@@ -12,7 +12,7 @@ function getLastDigits(num: number, digitNum?: number): number {
     digitNum = 1;
   }
 
-  return parseInt(numStr[numStr.length - digitNum]);
+  return Number.parseInt(numStr[numStr.length - digitNum]);
 }
 
 /**
@@ -29,7 +29,6 @@ function getSubSeeds(
   subSeedNum: number,
   digitsPerShape: number
 ): string[] {
-  
   let index = 0;
   const seeds: string[] = [];
 
@@ -78,7 +77,7 @@ function getCoordinateFromHash(
   maxHorizontal: number,
   maxVertical: number,
   useWholeCanvase?: boolean
-): { x: number; y: number } {
+): { x: number, y: number } {
   let x = 0;
   let y = 0;
 
@@ -100,21 +99,21 @@ function getCoordinateFromHash(
 
   // determine which quadrant the shape will be placed in. For the horizontal position, 0-3 is the
   // left half of the canvas, 3-6 is the center, and 6-9 is the right half. For the vertical, 0-3 is
-  // the top half of the canvas, 3-6 is the center, and 6-9 is the bottom half 
+  // the top half of the canvas, 3-6 is the center, and 6-9 is the bottom half
   //
   // note: math isn't thought out well here. It just needs to be reproducible
-  
-  if (0 <= xIndicator && xIndicator <= 3) {
+
+  if (xIndicator >= 0 && xIndicator <= 3) {
     x = sectionWidth - (sectionWidth - xIndicator);
-  } else if (3 < xIndicator && xIndicator <= 6) {
+  } else if (xIndicator > 3 && xIndicator <= 6) {
     x = sectionWidth * 2 - xIndicator;
   } else {
     x = sectionWidth * 3 - xIndicator;
   }
 
-  if (0 <= yIndicator && yIndicator <= 3) {
+  if (yIndicator >= 0 && yIndicator <= 3) {
     y = sectionHeight - (sectionHeight - yIndicator);
-  } else if (3 < yIndicator && yIndicator <= 6) {
+  } else if (yIndicator > 3 && yIndicator <= 6) {
     y = sectionHeight * 2 - yIndicator;
   } else {
     y = sectionHeight * 3 - yIndicator;
@@ -131,10 +130,9 @@ function getDimensionFromHash(
   hash: number,
   maxWidth: number,
   maxHeight: number
-): { width: number; height: number; diameter: number } {
-  
+): { width: number, height: number, diameter: number } {
   // get the last three digits from the hash
-  hash = parseInt(hash.toString().slice(-3));
+  hash = Number.parseInt(hash.toString().slice(-3));
 
   let width = hash * hash;
   let height = hash * hash;
@@ -156,4 +154,3 @@ function getDimensionFromHash(
 }
 
 export { getCoordinateFromHash, getDimensionFromHash, getLastDigits, getSubSeeds };
-
