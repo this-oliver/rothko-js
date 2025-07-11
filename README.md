@@ -1,5 +1,7 @@
 # Rothko-js 🖼️
 
+[![Continous Integration](https://github.com/this-oliver/rothko-js/actions/workflows/ci.yaml/badge.svg)](https://github.com/this-oliver/rothko-js/actions/workflows/ci.yaml) [![Continous Deployment](https://github.com/this-oliver/rothko-js/actions/workflows/cd.yaml/badge.svg)](https://github.com/this-oliver/rothko-js/actions/workflows/cd.yaml)
+
 A tool that deterministically generates visual patterns based on text-based input.
 
 https://github.com/this-oliver/rothko/assets/32515201/273badee-2063-4749-83ea-d1c1e7570c68
