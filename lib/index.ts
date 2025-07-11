@@ -1,5 +1,5 @@
-import RothkoCard from './RothkoCard.vue'
-import { usePattern, type Pattern } from './composables/useArt'
+import type { Pattern } from "./composables/useArt";
+import { usePattern } from "./composables/useArt";
+import RothkoCard from "./RothkoCard.vue";
 
-export { Pattern, RothkoCard, usePattern }
-
+export { Pattern, RothkoCard, usePattern };

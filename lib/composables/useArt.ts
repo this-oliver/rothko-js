@@ -4,81 +4,82 @@
  * and it is used, along with its digits, to deterministically generate the dimensions of a shape.
  */
 
-import P5 from 'p5';
-import { ref, type Ref } from 'vue';
-import { convertStringToHex, getRandomHex } from '../utils/color';
-import { getHash, getRandomNumber } from '../utils/crypto';
-import { getCoordinateFromHash, getDimensionFromHash, getLastDigits, getSubSeeds } from '../utils/vector';
+import type { Ref } from "vue";
+import P5 from "p5";
+import { ref } from "vue";
+import { convertStringToHex, getRandomHex } from "../utils/color";
+import { getHash, getRandomNumber } from "../utils/crypto";
+import { getCoordinateFromHash, getDimensionFromHash, getLastDigits, getSubSeeds } from "../utils/vector";
 
 /**
  * Canvas that will be drawn on
  */
 export interface Canvas {
-	width: number;
-	height: number;
+  width: number
+  height: number
 }
 
 /**
  * Shape that will be drawn on the canvas
  */
 export interface Shape {
-	seed: string;
-	x: number;
-	y: number;
-	color: string;
+  seed: string
+  x: number
+  y: number
+  color: string
 }
 
 export interface QuadShape extends Shape {
-	width: number;
-	height: number;
+  width: number
+  height: number
 }
 
 export interface CircleShape extends Shape {
-	diameter: number;
+  diameter: number
 }
 
 export interface TriangleShape extends Shape {
-	width: number;
-	height: number;
-  coordinates: { x: number, y: number }[]; // triangle has 3 coordinates
+  width: number
+  height: number
+  coordinates: { x: number, y: number }[] // triangle has 3 coordinates
 }
 
 /**
  * Function that draws a shape
  */
 export interface ShapeGenerator {
-	(p: P5, seed: string, canvas: Canvas, prevShape?: Shape): Shape;
+  (p: P5, seed: string, canvas: Canvas, prevShape?: Shape): Shape
 }
 
 /**
  * Configurations for the artist composable
  */
 interface ArtistConfig {
-	/**
-	 * Used to generate shapes in a deterministic way
-	 */
-	seed?: string;
-	/**
-	 * Number of shapes to draw
-	 */
-	shapeNumber?: number;
-	/**
-	 * Function that draws a shapes
-	 */
-	shapeGenerator: ShapeGenerator;
+  /**
+   * Used to generate shapes in a deterministic way
+   */
+  seed?: string
+  /**
+   * Number of shapes to draw
+   */
+  shapeNumber?: number
+  /**
+   * Function that draws a shapes
+   */
+  shapeGenerator: ShapeGenerator
 }
 
 /**
  * Patterns that can be used to generate shapes
  */
-export type Pattern = 'quad' | 'circle' | 'triangle';
+export type Pattern = "quad" | "circle" | "triangle";
 
 /**
  * Artist is used to create a canvas and draw shapes on it
  */
 function useArtist(p5Canvas: Ref) {
   if (!p5Canvas) {
-    throw new Error('p5Canvas is required');
+    throw new Error("p5Canvas is required");
   }
 
   const p5Instance = ref<P5>();
@@ -91,8 +92,8 @@ function useArtist(p5Canvas: Ref) {
   const shapes = ref<Shape[]>([]);
 
   /**
-	 * Draws a canvas using p5.js
-	 */
+   * Draws a canvas using p5.js
+   */
   function drawShapes(config: ArtistConfig): P5 {
     // set seed
     seed.value = config.seed || undefined;
@@ -149,9 +150,9 @@ function useArtist(p5Canvas: Ref) {
 
         // array of seeds that will be used to generate shapes. One hash per shape to be generated.
         const shapeSeeds: string[] = getSubSeeds(
-					hash.value!.toString(),
-					shapeNumber.value,
-					digitsPerShape
+          hash.value!.toString(),
+          shapeNumber.value,
+          digitsPerShape
         );
 
         // draw new shapes
@@ -194,21 +195,21 @@ function useArtist(p5Canvas: Ref) {
  */
 function usePattern() {
   /**
-	 * List of patterns that can be used to generate shapes
-	 */
-  const patterns: Pattern[] = [ 'quad', 'circle', 'triangle' ];
+   * List of patterns that can be used to generate shapes
+   */
+  const patterns: Pattern[] = ["quad", "circle", "triangle"];
 
   /**
-	 * Returns square/rectangle shape
-	 */
+   * Returns square/rectangle shape
+   */
   function createQuadShape(
     p: P5,
     seed: string,
     canvas: Canvas,
     prevShape?: Shape
   ): QuadShape {
-    const hash = getHash(seed || getRandomNumber() + '', true);
-    const color = seed ? convertStringToHex(hash + '') : getRandomHex();
+    const hash = getHash(seed || `${getRandomNumber()}`, true);
+    const color = seed ? convertStringToHex(`${hash}`) : getRandomHex();
 
     let { x, y } = getCoordinateFromHash(hash, canvas.width, canvas.height);
     const { width, height } = getDimensionFromHash(
@@ -246,16 +247,16 @@ function usePattern() {
   }
 
   /**
-	 * Returns circle shape
-	 */
+   * Returns circle shape
+   */
   function createCircleShape(
     p: P5,
     seed: string,
     canvas: Canvas,
     prevShape?: Shape
   ): CircleShape {
-    const hash = getHash(seed || getRandomNumber() + '', true);
-    const color = seed ? convertStringToHex(hash + '') : getRandomHex();
+    const hash = getHash(seed || `${getRandomNumber()}`, true);
+    const color = seed ? convertStringToHex(`${hash}`) : getRandomHex();
 
     let { x, y } = getCoordinateFromHash(
       hash,
@@ -297,16 +298,16 @@ function usePattern() {
   }
 
   /**
-	 * Returns triangle shape
-	 */
+   * Returns triangle shape
+   */
   function createTriangleShape(
     p: P5,
     seed: string,
     canvas: Canvas,
     prevShape?: Shape
   ): TriangleShape {
-    const hash = getHash(seed || getRandomNumber() + '', true);
-    const color = seed ? convertStringToHex(hash + '') : getRandomHex();
+    const hash = getHash(seed || `${getRandomNumber()}`, true);
+    const color = seed ? convertStringToHex(`${hash}`) : getRandomHex();
 
     let { x, y } = getCoordinateFromHash(
       hash,
@@ -346,7 +347,7 @@ function usePattern() {
 
     // set remaining two coordinates of triangle's three points
     const subSeeds = getSubSeeds(hash.toString(), 2, 3);
-    for(let i = 0; i < subSeeds.length; i++) {
+    for (let i = 0; i < subSeeds.length; i++) {
       const hash = getHash(subSeeds[i]);
       const { x, y } = getCoordinateFromHash(hash, canvas.width, canvas.height, true);
       shape.coordinates.push({ x, y });

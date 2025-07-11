@@ -1,8 +1,8 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import { setupVuetify } from './plugins'
+import { createApp } from "vue";
+import App from "./App.vue";
+import { setupVuetify } from "./plugins";
 
-const app = createApp(App)
+const app = createApp(App);
 
-app.use(setupVuetify())
-app.mount('#app')
+app.use(setupVuetify());
+app.mount("#app");

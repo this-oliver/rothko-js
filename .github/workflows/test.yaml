@@ -7,7 +7,7 @@ on:
       - dev
     paths:
       - 'lib/**'
-  
+
   pull_request:
     branches:
       - dev
@@ -21,17 +21,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '18'
-      
+
       - name: Setup pnpm
         run: npm install -g pnpm
-      
+
       - name: Install dependencies
         run: pnpm install
-      
+
       - name: Run tests
         run: pnpm test

@@ -28,13 +28,13 @@ npm install rothko-js
 
 ```vue
 <script setup lang='ts'>
-import { RothkoCard } from 'rothko-js'
+import { RothkoCard } from "rothko-js";
 
-const textInput = ref<string>()
+const textInput = ref<string>();
 </script>
 
 <template>
-  <rothko-card source="textInput" />
+  <RothkoCard source="textInput" />
 </template>
 ```
 

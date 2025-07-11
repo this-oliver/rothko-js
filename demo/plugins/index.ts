@@ -1,1 +1,1 @@
-export * from './vuetify-plugin';
+export * from "./vuetify-plugin";
