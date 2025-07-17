@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Pattern } from "@lib/composables/useArt";
+import type { Pattern } from "src/composables/useArt";
 
-import { usePattern } from "@lib/composables/useArt";
-import RothkoCard from "@lib/RothkoCard.vue";
 import html2canvas from "html2canvas";
+import { usePattern } from "src/composables/useArt";
+import RothkoCard from "src/RothkoCard.vue";
 import { ref } from "vue";
 import { useDisplay } from "vuetify";
 // read npm package version from package.json

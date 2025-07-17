@@ -2,7 +2,6 @@
 import type { PropType } from "vue";
 import type { Pattern, ShapeGenerator } from "./composables/useArt";
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
-import { useTheme as useVuetifyTheme } from "vuetify/lib/framework.mjs";
 import { useArtist, usePattern } from "./composables/useArt";
 import { convertStringToHex, getMaterialHex, getRandomHex, isHex } from "./utils/color";
 

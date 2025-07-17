@@ -10,11 +10,11 @@ export default defineConfig(({ mode }) => {
 
   const commonPlugins = [vue()];
 
-  if (mode === "lib") {
+  if (mode === "src") {
     userConfig = {
       build: {
         lib: {
-          entry: fileURLToPath(new URL("./lib/index.ts", import.meta.url)),
+          entry: fileURLToPath(new URL("./src/index.ts", import.meta.url)),
           name: "RothkoJs",
           fileName: "index"
         },
@@ -34,7 +34,7 @@ export default defineConfig(({ mode }) => {
 
       plugins: [
         // add type declaration
-        dts({ include: "./lib" })
+        dts({ include: "./src" })
       ]
     };
   } else if (mode === "demo") {
@@ -46,9 +46,9 @@ export default defineConfig(({ mode }) => {
       },
       resolve: {
         alias: {
-          // used for importing files from the lib folder in the demo folder
+          // used for importing files from the src folder in the demo folder
           // important: alias must match alias in tsconfig
-          "@lib": fileURLToPath(new URL("./lib", import.meta.url))
+          "@lib": fileURLToPath(new URL("./src", import.meta.url))
         }
       }
     };

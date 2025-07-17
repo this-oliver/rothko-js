@@ -7,7 +7,7 @@
       // used for importing files from the lib folder in the demo folder
       // important: alias must match alias in vite.config.ts
       "@lib/*": [
-        "lib/*"
+        "src/*"
       ]
     },
     "declaration": true
@@ -19,7 +19,7 @@
   ],
   "include": [
     "env.d.ts",
-    "lib/**/*",
+    "src/**/*",
     "demo/**/*"
   ],
   "exclude": [

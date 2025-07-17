@@ -13,9 +13,8 @@
     "npm": ">=10.0.0"
   },
   "scripts": {
-    "build": "npm run clear && vue-tsc --noEmit && vite build --mode lib",
+    "build": "npm run clear && vue-tsc --noEmit && vite build --mode src",
     "build:demo": "npm run clear:demo && vue-tsc --noEmit && vite build --mode demo",
-    "bump": "fistbump",
     "clear": "rm -rf package",
     "clear:demo": "rm -rf dist",
     "dev": "vite --mode demo",
@@ -53,6 +52,6 @@
   },
   "lint-staged": {
     "*": "npm run lint",
-    "lib/**/*": "npm run test"
+    "src/**/*": "npm run test"
   }
 }
