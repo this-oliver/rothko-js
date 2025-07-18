@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/this-oliver/rothko-js/compare/v0.5.1...v0.5.2) (2025-07-18)
+
+
+### Bug Fixes
+
+* not able to publish package because of release version tag ([#22](https://github.com/this-oliver/rothko-js/issues/22)) ([889d1e3](https://github.com/this-oliver/rothko-js/commit/889d1e33af125fc0e585e66018cbd07727e2c352))
+
 ## [0.5.1](https://github.com/this-oliver/rothko-js/compare/0.5.0...v0.5.1) (2025-07-18)
 
 
