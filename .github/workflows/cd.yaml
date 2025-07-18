@@ -37,10 +37,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Setup NPM authentication
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+
       - name: Publish package
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public
+
+      - name: Clean up
+        run: rm -f .npmrc
 
   deploy-page:
     needs: [publish-package, release]
