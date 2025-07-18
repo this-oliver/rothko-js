@@ -1,23 +1,7 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
-  "compilerOptions": {
-    "ignoreDeprecations": "5.0",
-    "baseUrl": ".",
-    "paths": {
-      // used for importing files from the lib folder in the demo folder
-      // important: alias must match alias in vite.config.ts
-      "@src/*": [
-        "../src/*"
-      ]
-    },
-    "declaration": true
-  },
   "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "files": []
 }
