@@ -6,8 +6,8 @@
     "paths": {
       // used for importing files from the lib folder in the demo folder
       // important: alias must match alias in vite.config.ts
-      "@lib/*": [
-        "src/*"
+      "@src/*": [
+        "../src/*"
       ]
     },
     "declaration": true
@@ -17,13 +17,7 @@
       "path": "./tsconfig.node.json"
     }
   ],
-  "include": [
-    "env.d.ts",
-    "src/**/*"
-  ],
   "exclude": [
-    "node_modules",
-    "demo",
-    "**/*.test.ts"
+    "node_modules"
   ]
 }

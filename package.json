@@ -13,24 +13,19 @@
     "npm": ">=10.0.0"
   },
   "scripts": {
-    "build": "npm run clear && vue-tsc --noEmit && vite build --mode src",
-    "build:demo": "npm run clear:demo && vue-tsc --noEmit && vite build --mode demo",
-    "clear": "rm -rf package",
-    "clear:demo": "rm -rf dist",
-    "dev": "vite --mode demo",
+    "build": "npm run clear && vue-tsc --noEmit && vite build",
+    "clear": "rm -rf dist",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "prepack": "npm test && npm run lint && npm run build",
     "prepare": "husky",
-    "preview:demo": "vite preview",
-    "test": "vitest run",
+    "test": "vitest run src/**/*.test.ts",
     "test:watch": "vitest"
   },
   "dependencies": {
     "html2canvas": "^1.4.1",
     "p5": "^1.6.0",
-    "vue": "^3.2.47",
-    "vuetify": "^3.2.1"
+    "vue": "^3.2.47"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.8.1",
@@ -52,6 +47,6 @@
   },
   "lint-staged": {
     "*": "npm run lint",
-    "src/**/*": "npm run test"
+    "src/**/*": "npm test"
   }
 }

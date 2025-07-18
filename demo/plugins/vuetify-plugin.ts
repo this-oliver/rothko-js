@@ -3,7 +3,6 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { aliases, mdi } from "vuetify/iconsets/mdi";
-import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import "vuetify/styles";
 
 const lightTheme: ThemeDefinition = {
@@ -56,10 +55,7 @@ const darkTheme: ThemeDefinition = {
 
 export function setupVuetify() {
   return createVuetify({
-    components: {
-      ...components,
-      VSkeletonLoader
-    },
+    components,
     directives,
     theme: {
       defaultTheme: "dark",

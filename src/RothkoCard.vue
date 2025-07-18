@@ -3,7 +3,7 @@ import type { PropType } from "vue";
 import type { Pattern, ShapeGenerator } from "./composables/useArt";
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { useArtist, usePattern } from "./composables/useArt";
-import { convertStringToHex, getMaterialHex, getRandomHex, isHex } from "./utils/color";
+import { convertStringToHex, getRandomHex, isHex } from "./utils/color";
 
 const props = defineProps({
   source: {
@@ -62,9 +62,18 @@ const color = computed<string>(() => {
   }
 
   // if a color is provided and it is not a hex color, convert it to a color
+  // only use common colors if the color is not a hex color - will return red if the color is not found
   if (props.color) {
-    const theme = useVuetifyTheme();
-    color = getMaterialHex(props.color, theme.global.current.value.colors);
+    const COMMON_COLORS = [
+      { label: "red", value: "#FF0000" },
+      { label: "green", value: "#00FF00" },
+      { label: "blue", value: "#0000FF" },
+      { label: "yellow", value: "#FFFF00" },
+      { label: "cyan", value: "#00FFFF" },
+      { label: "magenta", value: "#FF00FF" }
+    ];
+
+    return COMMON_COLORS.find(c => c.label === props.color)?.value || COMMON_COLORS[0].value;
   }
 
   return color;
