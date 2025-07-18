@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import type { Pattern } from "@lib/composables/useArt";
-
-import { usePattern } from "@lib/composables/useArt";
-import RothkoCard from "@lib/RothkoCard.vue";
+import type { Pattern } from "@src/composables/useArt";
+import { usePattern } from "@src/composables/useArt";
+import RothkoCard from "@src/RothkoCard.vue";
 import html2canvas from "html2canvas";
 import { ref } from "vue";
 import { useDisplay } from "vuetify";
-// read npm package version from package.json
-import { version } from "../package.json";
+import { version } from "../package.json"; // read npm package version from package.json
 
 const { smAndDown } = useDisplay();
 const { patterns } = usePattern();
