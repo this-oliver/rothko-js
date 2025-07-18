@@ -52,6 +52,17 @@ const textInput = ref<string>();
 | padding      | number | '0.5rem'          | The padding of the canvas                                               |
 | borderRadius | number | '5px 5px 0px 0px' | The border radius of the canvas                                         |
 
+The `color` prop can be set to one of the following values:
+
+| Value     | Description |
+| --------- | ----------- |
+| `red`     | `#FF0000`   |
+| `green`   | `#00FF00`   |
+| `blue`    | `#0000FF`   |
+| `yellow`  | `#FFFF00`   |
+| `cyan`    | `#00FFFF`   |
+| `magenta` | `#FF00FF`   |
+
 ## How does rothko-js work?
 
 `rothko-js` uses a [hash function](https://www.bitpanda.com/academy/en/lessons/what-is-a-hash-function-in-a-blockchain-transaction/) to generate colors and patterns based on the text input. A hash function takes produces some output for a given input. More importantly, the output is always the same (deterministic) for a given input and it is hard to infer the input from the output. These characteristics make hash functions extremely vital, in the context of information security, because they ensure the integrity of a payload.
