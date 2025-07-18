@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.3](https://github.com/this-oliver/rothko-js/compare/v0.5.2...v0.5.3) (2025-07-18)
+
+
+### Bug Fixes
+
+* npm failing to publish package because of auth ([#24](https://github.com/this-oliver/rothko-js/issues/24)) ([481a1ec](https://github.com/this-oliver/rothko-js/commit/481a1ec52d1ea9f93eafbd155a948eb6b1b68d3d))
+
 ## [0.5.2](https://github.com/this-oliver/rothko-js/compare/v0.5.1...v0.5.2) (2025-07-18)
 
 
