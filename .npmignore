@@ -1,8 +1,13 @@
 # only publish what is necessary, ignore everything else below
-demo
-tslint.json
-.env.sample
-.eslintrc
-.eslintignore
+.github
+.husky
 .vscode
 .vite
+.commitlintrc
+demo
+src
+eslint.config.mjs
+CONTRIBUTING.md
+CHANGELOG.md
+tsconfig*.json
+vitest.config.ts
