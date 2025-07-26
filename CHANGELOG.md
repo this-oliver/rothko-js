@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.4](https://github.com/this-oliver/rothko-js/compare/v0.5.3...v0.5.4) (2025-07-26)
+
+
+### Bug Fixes
+
+* updates package.json version ([5732940](https://github.com/this-oliver/rothko-js/commit/573294077bfabecbe62578c75a5005114b02266a))
+
 ## [0.5.3](https://github.com/this-oliver/rothko-js/compare/v0.5.2...v0.5.3) (2025-07-18)
 
 

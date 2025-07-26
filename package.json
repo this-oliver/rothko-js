@@ -1,6 +1,6 @@
 {
   "name": "rothko-js",
-  "version": "0.7.4",
+  "version": "0.5.4",
   "description": "Generate colors and visual patterns based on text-based input",
   "repository": {
     "type": "git",
