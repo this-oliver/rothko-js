@@ -12,7 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.11",
+    "@tailwindcss/vite": "^4.1.13",
     "rothko-js": "file:..",
     "tailwindcss": "^4.1.11",
     "vue": "^3.5.17"
