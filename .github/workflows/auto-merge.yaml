@@ -1,0 +1,14 @@
+name: Auto-Merge
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+    branches:
+      - main
+
+jobs:
+  auto-merge:
+    uses: this-oliver/devsecops/.github/workflows/auto-merge.yaml@main
+    secrets:
+      GITHUB_TOKEN: ${{ github.token }}
