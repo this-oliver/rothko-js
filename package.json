@@ -14,7 +14,9 @@
     "npm": ">=10.0.0"
   },
   "scripts": {
-    "build": "npm run clear && vue-tsc --noEmit && vite build",
+    "build": "npm run build:ts && vite build",
+    "build:ts": "npm run clear && vue-tsc --noEmit",
+    "build:demo": "cd demo && npm run build",
     "clear": "rm -rf dist",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
