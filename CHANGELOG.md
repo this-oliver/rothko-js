@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.5](https://github.com/this-oliver/rothko-js/compare/v0.7.4...v0.7.5) (2025-11-03)
+
+
+### Bug Fixes
+
+* rothko using incompatible @types/node dep ([#78](https://github.com/this-oliver/rothko-js/issues/78)) ([1d2eb55](https://github.com/this-oliver/rothko-js/commit/1d2eb5525d56e7736776fee89113a80adacd50e6))
+
 ## [0.5.3](https://github.com/this-oliver/rothko-js/compare/v0.5.2...v0.5.3) (2025-07-18)
 
 
